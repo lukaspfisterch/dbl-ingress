@@ -152,3 +152,4 @@ cython_debug/
 # IDE files
 .vscode/
 .idea/
+inventory.md
