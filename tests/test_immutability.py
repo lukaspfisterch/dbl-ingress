@@ -23,10 +23,10 @@ def test_immutability_of_dicts():
     )
     # The top level deterministic is a MappingProxyType (because deep_freeze wraps dicts)
     assert isinstance(record.deterministic, MappingProxyType)
-    
+
     # Nested dict should also be MappingProxyType
     assert isinstance(record.deterministic["data"], MappingProxyType)
-    
+
     # Attempting to mutate should fail
     with pytest.raises(TypeError):
         record.deterministic["data"]["new"] = 1 # type: ignore
@@ -38,10 +38,10 @@ def test_external_mutation_safety():
         correlation_id="safety-test",
         deterministic=input_data
     )
-    
+
     # Mutate external
     input_data["key"] = "changed"
-    
+
     # Record should remain "value"
     assert record.deterministic["key"] == "value"
 
@@ -49,7 +49,7 @@ def test_frozen_dataclass_mutation():
     """Verify that the dataclass itself is frozen."""
     record = shape_input(correlation_id="frozen", deterministic={})
     with pytest.raises(AttributeError): # FrozenInstanceError is AttributeError subclass
-        record.correlation_id = "new-id" 
+        record.correlation_id = "new-id"
 
 def test_tuple_conversion_deep():
     """Verify recursive list-to-tuple conversion."""

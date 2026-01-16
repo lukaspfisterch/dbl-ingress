@@ -1,5 +1,5 @@
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Mapping
 
 from ..reason_codes import ADMISSION_INVALID_INPUT
 from .errors import InvalidInputError
@@ -24,7 +24,7 @@ class AdmissionRecord:
                 "correlation_id must be a non-empty string",
                 reason_code=ADMISSION_INVALID_INPUT,
             )
-        
+
         # Validate and freeze deterministic data
         if not isinstance(self.deterministic, Mapping):
             raise InvalidInputError(
@@ -36,11 +36,11 @@ class AdmissionRecord:
             # Enforce immutability / validation
             # We must use object.__setattr__ because the dataclass is frozen
             object.__setattr__(
-                self, 
-                'deterministic', 
+                self,
+                'deterministic',
                 deep_freeze(self.deterministic, "deterministic")
             )
-            
+
             # Validate and freeze observational data if present
             if self.observational is not None:
                 if not isinstance(self.observational, Mapping):
@@ -48,10 +48,10 @@ class AdmissionRecord:
                         "observational must be a dictionary or mapping if provided",
                         reason_code=ADMISSION_INVALID_INPUT,
                     )
-                
+
                 object.__setattr__(
-                    self, 
-                    'observational', 
+                    self,
+                    'observational',
                     deep_freeze(self.observational, "observational")
                 )
 

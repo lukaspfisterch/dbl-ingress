@@ -1,18 +1,18 @@
-from typing import Mapping
+from collections.abc import Mapping
 
 from ..admission.json_types import JsonValue
 from ..admission.model import AdmissionRecord
 
 
 def shape_input(
-    *, 
-    correlation_id: str, 
-    deterministic: Mapping[str, JsonValue], 
+    *,
+    correlation_id: str,
+    deterministic: Mapping[str, JsonValue],
     observational: Mapping[str, JsonValue] | None = None
 ) -> AdmissionRecord:
     """
     Constructs an AdmissionRecord from inputs.
-    
+
     This function acts as the primary entry point for creating strictly validated
     records for the dbl-core system. It enforces type constraints and data
     integrity.
