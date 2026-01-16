@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-01-16
+### Fixed
+- Version bump for initial PyPI distribution.
+- Minor type hint refinements for AdmissionRecord.
+
 ## [0.1.0] - 2025-12-28
 ### Added
 - Initial release of `dbl-ingress`.

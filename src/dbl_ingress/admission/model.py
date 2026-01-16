@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Mapping
 
+from ..reason_codes import ADMISSION_INVALID_INPUT
 from .errors import InvalidInputError
 from .json_types import JsonMapping, deep_freeze
 
@@ -19,11 +20,17 @@ class AdmissionRecord:
         # - apply policy
         # - inspect dbl-core state
         if not isinstance(self.correlation_id, str) or not self.correlation_id:
-            raise InvalidInputError("correlation_id must be a non-empty string")
+            raise InvalidInputError(
+                "correlation_id must be a non-empty string",
+                reason_code=ADMISSION_INVALID_INPUT,
+            )
         
         # Validate and freeze deterministic data
         if not isinstance(self.deterministic, Mapping):
-            raise InvalidInputError("deterministic must be a dictionary or mapping")
+            raise InvalidInputError(
+                "deterministic must be a dictionary or mapping",
+                reason_code=ADMISSION_INVALID_INPUT,
+            )
 
         try:
             # Enforce immutability / validation
@@ -37,7 +44,10 @@ class AdmissionRecord:
             # Validate and freeze observational data if present
             if self.observational is not None:
                 if not isinstance(self.observational, Mapping):
-                    raise InvalidInputError("observational must be a dictionary or mapping if provided")
+                    raise InvalidInputError(
+                        "observational must be a dictionary or mapping if provided",
+                        reason_code=ADMISSION_INVALID_INPUT,
+                    )
                 
                 object.__setattr__(
                     self, 
@@ -46,5 +56,5 @@ class AdmissionRecord:
                 )
 
         except TypeError as e:
-            raise InvalidInputError(str(e)) from e
+            raise InvalidInputError(str(e), reason_code=ADMISSION_INVALID_INPUT) from e
 
